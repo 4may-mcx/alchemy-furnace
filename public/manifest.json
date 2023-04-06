@@ -10,6 +10,7 @@
     {
       "matches": ["<all_urls>"],
       "js": ["static/js/content.js"],
+      "css": ["static/css/content.css"],
       "run_at": "document_end"
     }
   ],
