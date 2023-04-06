@@ -23,5 +23,11 @@
     overflow: scroll;
     height: 310px;
     width: 130px;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    :global(.ant-spin-container) {
+      height: 308px;
+    }
   }
 }
