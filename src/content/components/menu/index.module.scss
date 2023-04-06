@@ -1,0 +1,27 @@
+.RC-menu-container {
+  position: fixed;
+  display: flex;
+  min-height: 400px;
+  min-width: 350px;
+  bottom: 120px;
+  right: 100px;
+  border: solid 2px #5b5b5b;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 5px;
+
+  .btns {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .RC-check-list {
+    margin-top: 6px;
+    overflow: scroll;
+    height: 310px;
+    width: 130px;
+  }
+}
