@@ -1,5 +1,5 @@
 {
-  "name": "炼丹炉v0",
+  "name": "电饭煲一代",
   "version": "0.0.1",
   "description": "用于chatGPT的探索与尝试, 文字模版快速填充",
   "manifest_version": 3,
@@ -33,7 +33,7 @@
       "48": "/images/app.png",
       "128": "/images/app.png"
     },
-    "default_title": "React CRX MV3"
+    "default_title": "fill helper"
   },
   "icons": {
     "16": "/images/app.png",
