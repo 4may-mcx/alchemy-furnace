@@ -1,13 +1,5 @@
 import ReactDOM from "react-dom/client";
-import classNames from "./index.module.scss";
-
-const Content = () => {
-  return (
-    <div className={classNames[`RC-container`]}>
-      <div className={classNames.entry}></div>
-    </div>
-  );
-};
+import Content from "./components/content";
 
 const app = document.createElement("div");
 const appId = "rice-container";
