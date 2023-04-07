@@ -1,6 +1,7 @@
 .RC-menu-container {
   position: fixed;
   display: flex;
+  z-index: 999;
   min-height: 400px;
   min-width: 350px;
   bottom: 120px;
@@ -15,7 +16,7 @@
     bottom: 10px;
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
   }
 
   .RC-check-list {
