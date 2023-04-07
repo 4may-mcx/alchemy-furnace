@@ -54,14 +54,13 @@ export const addData = (newData) => {
 
 export const exportData = (filename = "data.json") => {
   const rawData = localStorage.getItem(storageConfig.key);
-  const blob = new Blob([rawData], { type: "text/json" }),
-    e = new MouseEvent("click"),
-    a = document.createElement("a");
-
+  const blob = new Blob([rawData], { type: "text/json" });
+  const event = new MouseEvent("click");
+  const a = document.createElement("a");
   a.download = filename;
   a.href = window.URL.createObjectURL(blob);
   a.dataset.downloadurl = ["text/json", a.download, a.href].join(":");
-  a.dispatchEvent(e);
+  a.dispatchEvent(event);
 };
 
 // TODO:
