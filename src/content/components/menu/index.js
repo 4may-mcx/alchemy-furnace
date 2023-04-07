@@ -22,6 +22,10 @@ const Menu = ({ visiable }) => {
     console.log(text);
   }, [text]);
 
+  const importConf = useCallback(() => {
+    console.log("导入配置");
+  }, []);
+
   const handleValueChange = useCallback((e) => {
     setInputValue(e.target.value);
   }, []);
@@ -31,8 +35,8 @@ const Menu = ({ visiable }) => {
   }, []);
 
   const handleFillValue = useCallback(() => {
-    loadValue(inputValue);
-  }, [inputValue]);
+    loadValue(`${text}\n\`\`\`${inputValue}\`\`\``);
+  }, [text, inputValue]);
 
   const handleAddValue = useCallback(() => {
     addValue(inputValue);
@@ -58,7 +62,7 @@ const Menu = ({ visiable }) => {
 
       <div className={classNames.btns}>
         <Button onClick={exportConf}>导出</Button>
-        <Button>导入</Button>
+        <Button onClick={importConf}>导入</Button>
         <Button onClick={handleClearValue}>清空</Button>
         <Button onClick={handleFillValue}>填入</Button>
         <Button onClick={handleAddValue}>追加</Button>

@@ -1,11 +1,20 @@
+const urlConfig = [
+  {
+    url: "https://openai.zhenguanyu.com",
+    textAreaIndex: 1,
+  },
+  {
+    url: "https://chat.openai.com/chat",
+    textAreaIndex: 0,
+  },
+];
+
 const getTarget = () => {
   const textAreas = document.getElementsByTagName("textarea");
   const url = window.location.href;
 
-  if (url.indexOf('url === "https://openai.zhenguanyu.com/"')) {
-    return textAreas[0];
-  } else if (url.indexOf("https://chat.openai.com/chat")) {
-    return textAreas[0];
+  for (const config of urlConfig) {
+    if (url.indexOf(config.url) > 0) return textAreas[config.textAreaIndex];
   }
   return null;
 };
