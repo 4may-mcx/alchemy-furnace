@@ -3,7 +3,7 @@ import CheckList from "../check-list";
 import classNames from "./index.module.scss";
 import { useCallback, useEffect, useState } from "react";
 import { loadValue, addValue } from "./util";
-import { getTalkTemplate } from "../../data/talks";
+import { exportData, getTalkTemplate } from "../../data/talks";
 
 const Menu = ({ visiable }) => {
   const [inputValue, setInputValue] = useState("");
@@ -27,8 +27,8 @@ const Menu = ({ visiable }) => {
   }, [keysText, inputValue]);
 
   const exportConf = useCallback(() => {
-    console.log(keysText);
-  }, [keysText]);
+    exportData();
+  }, []);
 
   const importConf = useCallback(() => {
     console.log("导入配置");
@@ -55,7 +55,7 @@ const Menu = ({ visiable }) => {
     <>
       <div
         className={classNames[`RC-menu-container`]}
-        style={{ display: visiable ? "block" : "none" }}
+        style={{ display: visiable ? "flex" : "none" }}
       >
         <Space.Compact style={{ width: "100%" }}>
           <Input
@@ -78,14 +78,14 @@ const Menu = ({ visiable }) => {
         <div className={classNames.btns}>
           <Button onClick={exportConf}>导出</Button>
           <Button onClick={importConf}>导入</Button>
-          <Button onClick={handleClearValue} danger>
-            清空
-          </Button>
           <Button onClick={handleFillValue} type="primary" ghost>
             填入
           </Button>
           <Button onClick={handleAddValue} type="primary" ghost>
             追加
+          </Button>
+          <Button onClick={handleClearValue} danger>
+            清空
           </Button>
         </div>
       </div>

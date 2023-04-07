@@ -1,9 +1,8 @@
 .RC-menu-container {
   position: fixed;
   display: flex;
+  flex-flow: column;
   z-index: 999;
-  min-height: 400px;
-  min-width: 350px;
   bottom: 120px;
   right: 100px;
   border: solid 2px #5b5b5b;
@@ -12,17 +11,15 @@
   padding: 5px;
 
   .btns {
-    position: absolute;
-    bottom: 10px;
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
   }
 
   .RC-check-list {
     margin-top: 6px;
     overflow: scroll;
-    height: 310px;
+    height: 260px;
     width: 100%;
 
     :global(.ant-transfer-list) {
