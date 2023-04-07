@@ -22,12 +22,14 @@
     margin-top: 6px;
     overflow: scroll;
     height: 310px;
-    width: 130px;
+    width: 100%;
+
+    :global(.ant-transfer-list) {
+      height: 250px;
+    }
+    
     &::-webkit-scrollbar {
       display: none;
-    }
-    :global(.ant-spin-container) {
-      height: 308px;
     }
   }
 }

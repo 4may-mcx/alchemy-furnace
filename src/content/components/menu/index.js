@@ -1,11 +1,26 @@
 import { Button, Input } from "antd";
 import CheckList from "../check-list";
 import classNames from "./index.module.scss";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { loadValue, addValue } from "./util";
+import { getTalkTemplate } from "../../data/talks";
 
 const Menu = ({ visiable }) => {
   const [inputValue, setInputValue] = useState("aaa");
+  const [targetKeys, setTargetKeys] = useState([]);
+  const [text, setText] = useState("");
+
+  const handleKeyChange = (newTargetKeys) => {
+    setTargetKeys(newTargetKeys);
+  };
+
+  useEffect(() => {
+    setText(getTalkTemplate(targetKeys));
+  }, [targetKeys]);
+
+  const exportConf = useCallback(() => {
+    console.log(text);
+  }, [text]);
 
   const handleValueChange = useCallback((e) => {
     setInputValue(e.target.value);
@@ -38,11 +53,11 @@ const Menu = ({ visiable }) => {
       </div>
 
       <div className={classNames[`RC-check-list`]}>
-        <CheckList />
+        <CheckList handleKeyChange={handleKeyChange} />
       </div>
 
       <div className={classNames.btns}>
-        <Button>导出</Button>
+        <Button onClick={exportConf}>导出</Button>
         <Button>导入</Button>
         <Button onClick={handleClearValue}>清空</Button>
         <Button onClick={handleFillValue}>填入</Button>
