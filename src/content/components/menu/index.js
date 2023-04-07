@@ -6,7 +6,7 @@ import { loadValue, addValue } from "./util";
 import { getTalkTemplate } from "../../data/talks";
 
 const Menu = ({ visiable }) => {
-  const [inputValue, setInputValue] = useState("aaa");
+  const [inputValue, setInputValue] = useState("");
   const [targetKeys, setTargetKeys] = useState([]);
   const [keysText, setKeysText] = useState("");
   const [editorVisiable, setEditorVisiable] = useState(false);
@@ -39,6 +39,7 @@ const Menu = ({ visiable }) => {
   }, []);
 
   const handleClearValue = useCallback(() => {
+    setTargetKeys([]);
     setInputValue("");
   }, []);
 
@@ -58,7 +59,7 @@ const Menu = ({ visiable }) => {
       >
         <Space.Compact style={{ width: "100%" }}>
           <Input
-            placeholder="输入要发送的内容"
+            placeholder="enter text or code"
             value={inputValue}
             onChange={handleValueChange}
           />
@@ -68,15 +69,24 @@ const Menu = ({ visiable }) => {
         </Space.Compact>
 
         <div className={classNames[`RC-check-list`]}>
-          <CheckList handleKeyChange={handleKeyChange} />
+          <CheckList
+            handleKeyChange={handleKeyChange}
+            targetKeys={targetKeys}
+          />
         </div>
 
         <div className={classNames.btns}>
           <Button onClick={exportConf}>导出</Button>
           <Button onClick={importConf}>导入</Button>
-          <Button onClick={handleClearValue}>清空</Button>
-          <Button onClick={handleFillValue}>填入</Button>
-          <Button onClick={handleAddValue}>追加</Button>
+          <Button onClick={handleClearValue} danger>
+            清空
+          </Button>
+          <Button onClick={handleFillValue} type="primary" ghost>
+            填入
+          </Button>
+          <Button onClick={handleAddValue} type="primary" ghost>
+            追加
+          </Button>
         </div>
       </div>
       <Modal

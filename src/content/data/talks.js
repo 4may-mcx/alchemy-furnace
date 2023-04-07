@@ -1,4 +1,8 @@
-export const talksData = [
+const storageConfig = {
+  key: "__V_GPTHELPER",
+};
+
+export const defaultData = [
   {
     key: 0,
     title: "注释补全",
@@ -20,7 +24,35 @@ export const getTalkTemplate = (keys) => {
   let base = `根据以下需求，完善代码同时以代码块的形式输出 \n`;
   let count = 1;
   for (const key of keys) {
-    base += `${count++}. ${talksData[key].describe}\n`;
+    base += `${count++}. ${defaultData[key].describe}\n`;
   }
   return base;
 };
+
+export const getData = () => {
+  const data = localStorage.getItem(storageConfig.key);
+  if (!data) {
+    localStorage.setItem(storageConfig.key, JSON.stringify(defaultData));
+    return defaultData;
+  }
+  return JSON.parse(data);
+};
+
+export const addData = (newData) => {
+  // 如果本地没有任何数据
+  const rawData = localStorage.getItem(storageConfig.key);
+  if (!rawData) {
+    localStorage.setItem(storageConfig.key, JSON.stringify(newData));
+    return;
+  }
+  const orginData = JSON.parse(rawData);
+  localStorage.setItem(
+    storageConfig.key,
+    JSON.stringify([...orginData, ...newData])
+  );
+};
+
+// TODO:
+export const exportData = () => {};
+// TODO:
+export const importData = () => {};
