@@ -39,8 +39,8 @@ export const getData = () => {
 };
 
 export const addData = (newData) => {
-  // 如果本地没有任何数据
   const rawData = localStorage.getItem(storageConfig.key);
+  // 如果本地没有任何数据
   if (!rawData) {
     localStorage.setItem(storageConfig.key, JSON.stringify(newData));
     return;
