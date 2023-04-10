@@ -1,16 +1,25 @@
-import { Button, Input, Space, Modal } from "antd";
+import { Button, Input, Space, Modal, Popover } from "antd";
 import CheckList from "../check-list";
 import classNames from "./index.module.scss";
 import { useCallback, useEffect, useState } from "react";
 import { loadValue, addValue } from "./util";
-import { exportData, getTalkTemplate } from "../../data/talks";
+import {
+  getData,
+  addData,
+  exportData,
+  getTalkTemplate,
+} from "../../data/talks";
 
 const Menu = ({ visiable }) => {
+  const [list, setList] = useState(getData());
   const [inputValue, setInputValue] = useState("");
   const [targetKeys, setTargetKeys] = useState([]);
   const [keysText, setKeysText] = useState("");
   const [editorVisiable, setEditorVisiable] = useState(false);
   const [text, setText] = useState("");
+
+  const [newConfigTitle, setNewConfigTitle] = useState("");
+  const [newConfigDesc, setNewConfigDesc] = useState("");
   const handleKeyChange = (newTargetKeys) => {
     setTargetKeys(newTargetKeys);
   };
@@ -26,16 +35,8 @@ const Menu = ({ visiable }) => {
     setText(text);
   }, [keysText, inputValue]);
 
-  const exportConf = useCallback(() => {
-    exportData();
-  }, []);
-
   const importConf = useCallback(() => {
     console.log("导入配置");
-  }, []);
-
-  const handleValueChange = useCallback((e) => {
-    setInputValue(e.target.value);
   }, []);
 
   const handleClearValue = useCallback(() => {
@@ -43,13 +44,47 @@ const Menu = ({ visiable }) => {
     setInputValue("");
   }, []);
 
-  const handleFillValue = useCallback(() => {
-    loadValue(text);
-  }, [text]);
+  const handleNewConfReset = useCallback(() => {
+    setNewConfigTitle("");
+    setNewConfigDesc("");
+  }, []);
 
-  const handleAddValue = useCallback(() => {
-    addValue(text);
-  }, [text]);
+  const addConf = useCallback(() => {
+    addData({
+      title: newConfigTitle,
+      describe: newConfigDesc,
+    });
+    setList(getData());
+    handleNewConfReset();
+  }, [newConfigTitle, newConfigDesc, handleNewConfReset]);
+
+  const popOverContent = (
+    <div style={{ width: "200px" }}>
+      <Input
+        style={{ marginBottom: "5px" }}
+        placeholder="enter title"
+        value={newConfigTitle}
+        onChange={(e) => setNewConfigTitle(e.target.value)}
+      />
+      <Input
+        style={{ marginBottom: "10px" }}
+        placeholder="enter describe"
+        value={newConfigDesc}
+        onChange={(e) => setNewConfigDesc(e.target.value)}
+      />
+      <Button
+        type="primary"
+        size="small"
+        style={{ marginRight: "8px" }}
+        onClick={addConf}
+      >
+        确认
+      </Button>
+      <Button size="small" onClick={handleNewConfReset}>
+        重置
+      </Button>
+    </div>
+  );
 
   return (
     <>
@@ -61,7 +96,7 @@ const Menu = ({ visiable }) => {
           <Input
             placeholder="enter text or code"
             value={inputValue}
-            onChange={handleValueChange}
+            onChange={(e) => setInputValue(e.target.value)}
           />
           <Button type="primary" onClick={() => setEditorVisiable(true)}>
             展开
@@ -72,16 +107,21 @@ const Menu = ({ visiable }) => {
           <CheckList
             handleKeyChange={handleKeyChange}
             targetKeys={targetKeys}
+            list={list}
           />
         </div>
 
         <div className={classNames.btns}>
-          <Button onClick={exportConf}>导出</Button>
+          <Popover content={popOverContent} trigger="click" placement="left">
+            <Button>新增</Button>
+          </Popover>
+
+          <Button onClick={exportData}>导出</Button>
           <Button onClick={importConf}>导入</Button>
-          <Button onClick={handleFillValue} type="primary" ghost>
+          <Button onClick={() => loadValue(text)} type="primary" ghost>
             填入
           </Button>
-          <Button onClick={handleAddValue} type="primary" ghost>
+          <Button onClick={() => addValue(text)} type="primary" ghost>
             追加
           </Button>
           <Button onClick={handleClearValue} danger>
@@ -89,6 +129,7 @@ const Menu = ({ visiable }) => {
           </Button>
         </div>
       </div>
+
       <Modal
         open={editorVisiable}
         onCancel={() => setEditorVisiable(false)}

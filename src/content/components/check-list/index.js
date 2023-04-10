@@ -1,10 +1,6 @@
 import { Transfer } from "antd";
-import { useState } from "react";
-import { getData } from "../../data/talks";
 
-const CheckList = ({ handleKeyChange, targetKeys }) => {
-  const [mockData] = useState(getData());
-
+const CheckList = ({ handleKeyChange, targetKeys, list }) => {
   const filterOption = (inputValue, option) =>
     option.title.indexOf(inputValue) > -1;
 
@@ -14,7 +10,7 @@ const CheckList = ({ handleKeyChange, targetKeys }) => {
 
   return (
     <Transfer
-      dataSource={mockData}
+      dataSource={list}
       showSearch
       filterOption={filterOption}
       targetKeys={targetKeys}

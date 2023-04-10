@@ -22,10 +22,10 @@ export const defaultData = [
 
 export const getTalkTemplate = (keys) => {
   let base = `根据以下需求，完善代码同时以代码块的形式输出 \n`;
-  let count = 1;
-  for (const key of keys) {
-    base += `${count++}. ${defaultData[key].describe}\n`;
-  }
+  const data = getData();
+  keys.forEach((key, index) => {
+    base += `${index + 1}. ${data[key].describe}\n`;
+  });
   return base;
 };
 
@@ -42,13 +42,16 @@ export const addData = (newData) => {
   const rawData = localStorage.getItem(storageConfig.key);
   // 如果本地没有任何数据
   if (!rawData) {
-    localStorage.setItem(storageConfig.key, JSON.stringify(newData));
+    localStorage.setItem(
+      storageConfig.key,
+      JSON.stringify({ key: 0, ...newData })
+    );
     return;
   }
   const orginData = JSON.parse(rawData);
   localStorage.setItem(
     storageConfig.key,
-    JSON.stringify([...orginData, ...newData])
+    JSON.stringify([...orginData, { key: orginData.length, ...newData }])
   );
 };
 
