@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import Popup from "@/popup";
-// import Popup from "@/content/components/content";
 
 import { ConfigProvider } from "antd";
 import zhCN from "antd/locale/zh_CN";

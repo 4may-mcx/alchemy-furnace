@@ -13,7 +13,10 @@
   .btns {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
+    :global(.ant-btn) {
+      margin-left: 7px;
+    }
   }
 
   .RC-check-list {
@@ -30,4 +33,10 @@
       display: none;
     }
   }
+}
+
+.RC-setting-container {
+  border-bottom: 1px solid lightgray;
+  margin-bottom: 5px;
+  justify-content: space-around;
 }

@@ -20,6 +20,10 @@ export const defaultData = [
   },
 ];
 
+const setData = (data) => {
+  localStorage.setItem(storageConfig.key, JSON.stringify(data));
+};
+
 export const getTalkTemplate = (keys) => {
   let base = `根据以下需求，完善代码同时以代码块的形式输出 \n`;
   const data = getData();
@@ -32,7 +36,7 @@ export const getTalkTemplate = (keys) => {
 export const getData = () => {
   const data = localStorage.getItem(storageConfig.key);
   if (!data) {
-    localStorage.setItem(storageConfig.key, JSON.stringify(defaultData));
+    setData(defaultData);
     return defaultData;
   }
   return JSON.parse(data);
@@ -49,22 +53,48 @@ export const addData = (newData) => {
     return;
   }
   const orginData = JSON.parse(rawData);
-  localStorage.setItem(
-    storageConfig.key,
-    JSON.stringify([...orginData, { key: orginData.length, ...newData }])
-  );
+  for (const config of orginData) {
+    if (config.title === newData.title) {
+      return false;
+    }
+  }
+  setData([...orginData, { key: orginData.length, ...newData }]);
+  return true;
 };
 
-export const exportData = (filename = "data.json") => {
+export const editConfig = (key, title, describe) => {
+  if (!title || !describe) {
+    console.error("title or describe is not found");
+    return;
+  }
+  const rawData = getData();
+  const target = rawData[key];
+  target.title = title;
+  target.describe = describe;
+  setData(rawData);
+};
+
+export const delConfig = (keys) => {
+  if (!keys.length) return;
+  const rawData = getData();
+  const newData = rawData
+    .filter((item) => !keys.includes(item.key))
+    .map((item, index) => ({ ...item, key: index }));
+  setData(newData);
+};
+
+export const exportConfig = (filename) => {
   const rawData = localStorage.getItem(storageConfig.key);
   const blob = new Blob([rawData], { type: "text/json" });
-  const event = new MouseEvent("click");
   const a = document.createElement("a");
-  a.download = filename;
+
+  a.download = filename.endsWith(".json") ? filename : filename + ".json";
   a.href = window.URL.createObjectURL(blob);
   a.dataset.downloadurl = ["text/json", a.download, a.href].join(":");
-  a.dispatchEvent(event);
+  a.dispatchEvent(new MouseEvent("click"));
 };
 
 // TODO:
-export const importData = () => {};
+export const importConfig = () => {
+  console.log("导入配置");
+};

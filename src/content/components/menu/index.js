@@ -1,14 +1,12 @@
-import { Button, Input, Space, Modal, Popover } from "antd";
+import { Button, Input, Space, Modal } from "antd";
+import { SettingOutlined } from "@ant-design/icons";
 import CheckList from "../check-list";
+import SettingModal from "../del-list-modal";
 import classNames from "./index.module.scss";
 import { useCallback, useEffect, useState } from "react";
 import { loadValue, addValue } from "./util";
-import {
-  getData,
-  addData,
-  exportData,
-  getTalkTemplate,
-} from "../../data/talks";
+
+import { getData, getTalkTemplate } from "../../data/talks";
 
 const Menu = ({ visiable }) => {
   const [list, setList] = useState(getData());
@@ -17,9 +15,8 @@ const Menu = ({ visiable }) => {
   const [keysText, setKeysText] = useState("");
   const [editorVisiable, setEditorVisiable] = useState(false);
   const [text, setText] = useState("");
+  const [settingModalVisiable, setSettingModalVisiable] = useState(false);
 
-  const [newConfigTitle, setNewConfigTitle] = useState("");
-  const [newConfigDesc, setNewConfigDesc] = useState("");
   const handleKeyChange = (newTargetKeys) => {
     setTargetKeys(newTargetKeys);
   };
@@ -35,56 +32,10 @@ const Menu = ({ visiable }) => {
     setText(text);
   }, [keysText, inputValue]);
 
-  const importConf = useCallback(() => {
-    console.log("导入配置");
-  }, []);
-
   const handleClearValue = useCallback(() => {
     setTargetKeys([]);
     setInputValue("");
   }, []);
-
-  const handleNewConfReset = useCallback(() => {
-    setNewConfigTitle("");
-    setNewConfigDesc("");
-  }, []);
-
-  const addConf = useCallback(() => {
-    addData({
-      title: newConfigTitle,
-      describe: newConfigDesc,
-    });
-    setList(getData());
-    handleNewConfReset();
-  }, [newConfigTitle, newConfigDesc, handleNewConfReset]);
-
-  const popOverContent = (
-    <div style={{ width: "200px" }}>
-      <Input
-        style={{ marginBottom: "5px" }}
-        placeholder="enter title"
-        value={newConfigTitle}
-        onChange={(e) => setNewConfigTitle(e.target.value)}
-      />
-      <Input
-        style={{ marginBottom: "10px" }}
-        placeholder="enter describe"
-        value={newConfigDesc}
-        onChange={(e) => setNewConfigDesc(e.target.value)}
-      />
-      <Button
-        type="primary"
-        size="small"
-        style={{ marginRight: "8px" }}
-        onClick={addConf}
-      >
-        确认
-      </Button>
-      <Button size="small" onClick={handleNewConfReset}>
-        重置
-      </Button>
-    </div>
-  );
 
   return (
     <>
@@ -92,6 +43,13 @@ const Menu = ({ visiable }) => {
         className={classNames[`RC-menu-container`]}
         style={{ display: visiable ? "flex" : "none" }}
       >
+        <div className={classNames["RC-setting-container"]}>
+          <SettingOutlined
+            title="设置面板"
+            style={{ cursor: "pointer" }}
+            onClick={() => setSettingModalVisiable(true)}
+          />
+        </div>
         <Space.Compact style={{ width: "100%" }}>
           <Input
             placeholder="enter text or code"
@@ -112,27 +70,39 @@ const Menu = ({ visiable }) => {
         </div>
 
         <div className={classNames.btns}>
-          <Popover content={popOverContent} trigger="click" placement="left">
-            <Button>新增</Button>
-          </Popover>
-
-          <Button onClick={exportData}>导出</Button>
-          <Button onClick={importConf}>导入</Button>
-          <Button onClick={() => loadValue(text)} type="primary" ghost>
+          <Button
+            title="将模版填入输入框"
+            onClick={() => loadValue(text)}
+            type="primary"
+            ghost
+          >
             填入
           </Button>
-          <Button onClick={() => addValue(text)} type="primary" ghost>
+          <Button
+            title="将模版追加在输入框已有的内容之后"
+            onClick={() => addValue(text)}
+            type="primary"
+            ghost
+          >
             追加
           </Button>
-          <Button onClick={handleClearValue} danger>
+          <Button title="清空当前配置的模版" onClick={handleClearValue} danger>
             清空
           </Button>
         </div>
       </div>
 
+      <SettingModal
+        visiable={settingModalVisiable}
+        rawData={list}
+        onCancel={() => setSettingModalVisiable(false)}
+        onDataUpdate={() => setList(getData())}
+        footer={[]}
+      />
       <Modal
         open={editorVisiable}
         onCancel={() => setEditorVisiable(false)}
+        width="500px"
         zIndex={9999}
         footer={[]}
       >
